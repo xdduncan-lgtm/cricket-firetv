@@ -202,7 +202,7 @@ function finishByScore(low){
 const NUMS_C=[20,19,18,17,16,15,25];
 const ATC=[...Array(20)].map((_,i)=>i+1).concat(25);
 const HALVE=[15,16,'D',17,18,'T',19,20,'B'];
-const hName=t=>t==='D'?'Any double':t==='T'?'Any treble':t==='B'?'Bull':String(t);
+const hName=t=>t==='D'?'Any double':t==='T'?'Any triple':t==='B'?'Bull':String(t);
 function mpr(i){const p=S.players[i];const t=p.turns+(S.turn===i&&S.dart>0&&!S.over?1:0);return t?(p.mt/t).toFixed(2):'0.00';}
 const avg3=p=>p.darts?((S.o.start-p.left)/p.darts*3).toFixed(1):'0.0';
 const lives=p=>'●'.repeat(Math.max(0,p.lives))+'○'.repeat(Math.max(0,S.o.lives-p.lives));
@@ -266,8 +266,8 @@ const GAMES={
     <div class="bighint">${!p.in?'Hit any double to start scoring':c?'Checkout '+c:p.left>170?p.left+' to go':'No checkout this turn'}</div>`;},
   text:(S,p)=>`${p.left} left`,solo:(S,p)=>`${avg3(p)} three-dart average`},
 
- atc:{n:'Around the Clock',min:1,desc:'Hit 1 through 20 in order, then the bull. First to finish wins. With “skip ahead”, a double moves you two numbers and a treble three.',
-  opts:[{k:'skip',l:'Doubles & trebles',v:['Count once','Skip ahead']}],
+ atc:{n:'Around the Clock',min:1,desc:'Hit 1 through 20 in order, then the bull. First to finish wins. With “skip ahead”, a double moves you two numbers and a triple three.',
+  opts:[{k:'skip',l:'Doubles & triples',v:['Count once','Skip ahead']}],
   init(){S.players.forEach(p=>p.t=0);},
   target:p=>ATC[Math.min(p.t,20)],
   dart(i,p,num,m){
@@ -280,7 +280,7 @@ const GAMES={
   panel(){return `<h3>Course</h3><div class="strip">${ATC.map((n,j)=>`<div class="${j<S.players[S.turn].t?'done':j===S.players[S.turn].t?'now':''}">${tl(n)}</div>`).join('')}</div>`;},
   text:(S,p)=>p.t>=21?'finished':'on '+tl(ATC[p.t]),solo:(S,p)=>`Finished in ${S.round} round${S.round>1?'s':''}`},
 
- shanghai:{n:'Shanghai',min:1,desc:'Round 1 aims at 1, round 2 at 2, and so on. Score what you hit on the target. A single, double and treble of the target in one turn is a Shanghai and wins instantly.',
+ shanghai:{n:'Shanghai',min:1,desc:'Round 1 aims at 1, round 2 at 2, and so on. Score what you hit on the target. A single, double and triple of the target in one turn is a Shanghai and wins instantly.',
   opts:[{k:'rounds',l:'Rounds',v:[7,20]}],
   init(){S.players.forEach(p=>p.score=0);},rounds:()=>S.o.rounds,target:()=>Math.min(S.round,20),
   dart(i,p,num,m){
@@ -311,7 +311,7 @@ const GAMES={
   panel(){return `<h3>Numbers</h3><div class="strip">${S.players.map(p=>`<div style="${p.out?'opacity:.3':''}">${symHtml(p.sym)} ${p.num}</div>`).join('')}</div>`;},
   text:(S,p)=>p.out?'out':`${p.lives} ${p.lives===1?'life':'lives'}`},
 
- halveit:{n:'Halve-It',min:1,desc:'Each round has a target: 15, 16, any double, 17, 18, any treble, 19, 20, bull. Score what you hit. Miss the target with all three darts and your score is cut in half.',
+ halveit:{n:'Halve-It',min:1,desc:'Each round has a target: 15, 16, any double, 17, 18, any triple, 19, 20, bull. Score what you hit. Miss the target with all three darts and your score is cut in half.',
   defMult:()=>({D:2,T:3})[HALVE[S.round-1]]||1,
   opts:[],init(){S.players.forEach(p=>{p.score=0;p.hit=false;});},rounds:()=>9,
   target:()=>{const t=HALVE[S.round-1];return typeof t==='number'?t:t==='B'?25:20;},
@@ -319,10 +319,10 @@ const GAMES={
     if(t==='D'?m===2:t==='T'?m===3:t==='B'?num===25:num===t){p.score+=num*m;p.hit=true;}},
   endTurn(p){if(!p.hit){p.score=Math.floor(p.score/2);S.note='Halved';}p.hit=false;},
   final:()=>finishByScore(),big:p=>p.score,hint:()=>'Target: '+hName(HALVE[S.round-1]),
-  panel(){return `<h3>Targets</h3><div class="strip">${HALVE.map((t,j)=>`<div class="${j+1<S.round?'done':j+1===S.round?'now':''}">${t==='D'?'Dbl':t==='T'?'Tre':t==='B'?'Bull':t}</div>`).join('')}</div>`;},
+  panel(){return `<h3>Targets</h3><div class="strip">${HALVE.map((t,j)=>`<div class="${j+1<S.round?'done':j+1===S.round?'now':''}">${t==='D'?'Dbl':t==='T'?'Tri':t==='B'?'Bull':t}</div>`).join('')}</div>`;},
   text:(S,p)=>String(p.score),solo:(S,p)=>`Final score ${p.score}`},
 
- baseball:{n:'Baseball',min:1,word:'inning',desc:'Nine innings. Inning 1 aims at 1, inning 2 at 2, and so on. Singles score 1 run, doubles 2, trebles 3. Tied after nine? Extra innings.',
+ baseball:{n:'Baseball',min:1,word:'inning',desc:'Nine innings. Inning 1 aims at 1, inning 2 at 2, and so on. Singles score 1 run, doubles 2, triples 3. Tied after nine? Extra innings.',
   opts:[],init(){S.players.forEach(p=>{p.score=0;p.inn=[];});},rounds:()=>9,
   target:()=>S.round<=20?S.round:25,
   dart(i,p,num,m){const t=S.round<=20?S.round:25;if(num===t){p.score+=m;p.inn[S.round-1]=(p.inn[S.round-1]||0)+m;}},
@@ -339,7 +339,7 @@ const GAMES={
   panel(){return `<h3>Rounds</h3><div class="strip">${[...Array(S.o.rounds)].map((_,j)=>`<div class="${j+1<S.round?'done':j+1===S.round?'now':''}">${j+1}</div>`).join('')}</div>`;},
   text:(S,p)=>String(p.score),solo:(S,p)=>`Final score ${p.score}`},
 
- golf:{n:'Golf',min:1,word:'hole',desc:'Hole 1 aims at 1, hole 2 at 2, and so on. Your last dart is your score: double 1, treble 2, single 3, anything else 5. Press Next player to keep a score early. Lowest total wins.',
+ golf:{n:'Golf',min:1,word:'hole',desc:'Hole 1 aims at 1, hole 2 at 2, and so on. Your last dart is your score: double 1, triple 2, single 3, anything else 5. Press Next player to keep a score early. Lowest total wins.',
   opts:[{k:'holes',l:'Holes',v:[9,18]}],init(){S.players.forEach(p=>{p.score=0;p.holes=[];p.cur=null;});},rounds:()=>S.o.holes,
   target:()=>S.round,
   dart(i,p,num,m){p.cur=num===S.round?(m===2?1:m===3?2:3):5;if(p.cur===1)return {end:true};},
@@ -623,10 +623,10 @@ function renderPad(){
   app.innerHTML=`<div class="game pad n${n}" style="--n:${n};--pc:${acc(pc)}">
     <div class="left"><div class="cards">${cards}</div><div class="panel">${g.panel?g.panel():''}<div class="last" style="margin-top:auto">${lastText()}</div></div></div>
     <div class="side">${whoHtml()}
-      <div class="mult">${['Single','Double','Treble'].map((t,k)=>`<div class="${S.mult===k+1?'on':''}${onBull&&k===2?' off':''}">${t}</div>`).join('')}</div>
+      <div class="mult">${['Single','Double','Triple'].map((t,k)=>`<div class="${S.mult===k+1?'on':''}${onBull&&k===2?' off':''}">${t}</div>`).join('')}</div>
       <div class="keypad">${PAD.flat().map((v,j)=>{const r=Math.floor(j/5),c=j%5;const isN=typeof v==='number';
         return `<div class="key${!isN?' sm':''}${isN&&tg.has(v)?' tg':''}${ui.pr===r&&ui.pc===c&&!S.over?' cur':''}">${isN?tl(v):v}</div>`;}).join('')}</div>
-      <div class="help">Arrows pick a number, OK scores it. ⏯ switches single, double, treble.<br>⏪ undo, ⏩ next player, Back for the menu.</div>
+      <div class="help">Arrows pick a number, OK scores it. ⏯ switches single, double, triple.<br>⏪ undo, ⏩ next player, Back for the menu.</div>
     </div></div>`+overHtml()+menuHtml();
 }
 function acc(i){return S?accent(S.players[i].sym,i):accent({cat:cfg.cat,key:symKey(i)},i);}
