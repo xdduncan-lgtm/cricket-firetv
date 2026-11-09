@@ -138,23 +138,18 @@ const EMO={"1f436": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53M
 
 /* ================= symbols ================= */
 const COLORS=[['red','Red','#D93A2B'],['orange','Orange','#EF7D22'],['yellow','Yellow','#F2C92C'],['lime','Lime','#8CC63F'],['green','Green','#2E9E4F'],['teal','Teal','#1A9C9C'],['sky','Sky Blue','#3FA9E6'],['blue','Blue','#2F5FD0'],['navy','Navy','#1F2F6B'],['purple','Purple','#7D45B8'],['pink','Pink','#E85C9E'],['maroon','Maroon','#7A1F2B'],['brown','Brown','#8A5A35'],['gold','Gold','#C9A23A'],['silver','Silver','#A8AFB5'],['white','White','#F4F4F4'],['black','Black','#151515']];
-const NFL=[['ARI','Cardinals','#97233F','#000000'],['ATL','Falcons','#A71930','#000000'],['BAL','Ravens','#241773','#9E7C0C'],['BUF','Bills','#00338D','#C60C30'],['CAR','Panthers','#0085CA','#101820'],['CHI','Bears','#0B162A','#C83803'],['CIN','Bengals','#FB4F14','#000000'],['CLE','Browns','#311D00','#FF3C00'],['DAL','Cowboys','#003594','#869397'],['DEN','Broncos','#FB4F14','#002244'],['DET','Lions','#0076B6','#B0B7BC'],['GB','Packers','#203731','#FFB612'],['HOU','Texans','#03202F','#A71930'],['IND','Colts','#002C5F','#A2AAAD'],['JAX','Jaguars','#006778','#D7A22A'],['KC','Chiefs','#E31837','#FFB81C'],['LV','Raiders','#000000','#A5ACAF'],['LAC','Chargers','#0080C6','#FFC20E'],['LAR','Rams','#003594','#FFA300'],['MIA','Dolphins','#008E97','#FC4C02'],['MIN','Vikings','#4F2683','#FFC62F'],['NE','Patriots','#002244','#C60C30'],['NO','Saints','#101820','#D3BC8D'],['NYG','Giants','#0B2265','#A71930'],['NYJ','Jets','#125740','#FFFFFF'],['PHI','Eagles','#004C54','#A5ACAF'],['PIT','Steelers','#101820','#FFB612'],['SF','49ers','#AA0000','#B3995D'],['SEA','Seahawks','#002244','#69BE28'],['TB','Buccaneers','#D50A0A','#34302B'],['TEN','Titans','#0C2340','#4B92DB'],['WAS','Commanders','#5A1414','#FFB612']];
-const NBA=[['ATL','Hawks','#E03A3E','#C1D32F'],['BOS','Celtics','#007A33','#BA9653'],['BKN','Nets','#000000','#FFFFFF'],['CHA','Hornets','#1D1160','#00788C'],['CHI','Bulls','#CE1141','#000000'],['CLE','Cavaliers','#860038','#FDBB30'],['DAL','Mavericks','#00538C','#B8C4CA'],['DEN','Nuggets','#0E2240','#FEC524'],['DET','Pistons','#C8102E','#1D42BA'],['GSW','Warriors','#1D428A','#FFC72C'],['HOU','Rockets','#CE1141','#C4CED4'],['IND','Pacers','#002D62','#FDBB30'],['LAC','Clippers','#C8102E','#1D428A'],['LAL','Lakers','#552583','#FDB927'],['MEM','Grizzlies','#5D76A9','#12173F'],['MIA','Heat','#98002E','#F9A01B'],['MIL','Bucks','#00471B','#EEE1C6'],['MIN','Timberwolves','#0C2340','#78BE20'],['NOP','Pelicans','#0C2340','#C8102E'],['NYK','Knicks','#006BB6','#F58426'],['OKC','Thunder','#007AC1','#EF3B24'],['ORL','Magic','#0077C0','#C4CED4'],['PHI','76ers','#006BB6','#ED174C'],['PHX','Suns','#1D1160','#E56020'],['POR','Trail Blazers','#E03A3E','#000000'],['SAC','Kings','#5A2D81','#63727A'],['SAS','Spurs','#000000','#C4CED4'],['TOR','Raptors','#CE1141','#000000'],['UTA','Jazz','#002B5C','#F9A01B'],['WAS','Wizards','#002B5C','#E31837']];
-const MLB=[['ARI','D-backs','#A71930','#E3D4AD'],['ATL','Braves','#CE1141','#13274F'],['BAL','Orioles','#DF4601','#000000'],['BOS','Red Sox','#BD3039','#0C2340'],['CHC','Cubs','#0E3386','#CC3433'],['CWS','White Sox','#27251F','#C4CED4'],['CIN','Reds','#C6011F','#000000'],['CLE','Guardians','#00385D','#E50022'],['COL','Rockies','#333366','#C4CED4'],['DET','Tigers','#0C2340','#FA4616'],['HOU','Astros','#002D62','#EB6E1F'],['KC','Royals','#004687','#BD9B60'],['LAA','Angels','#BA0021','#FFFFFF'],['LAD','Dodgers','#005A9C','#FFFFFF'],['MIA','Marlins','#00A3E0','#EF3340'],['MIL','Brewers','#12284B','#FFC52F'],['MIN','Twins','#002B5C','#D31145'],['NYM','Mets','#002D72','#FF5910'],['NYY','Yankees','#0C2340','#FFFFFF'],['ATH','Athletics','#003831','#EFB21E'],['PHI','Phillies','#E81828','#FFFFFF'],['PIT','Pirates','#27251F','#FDB827'],['SD','Padres','#2F241D','#FFC425'],['SF','Giants','#FD5A1E','#27251F'],['SEA','Mariners','#0C2C56','#00A3AD'],['STL','Cardinals','#C41E3A','#FFFFFF'],['TB','Rays','#092C5C','#8FBCE6'],['TEX','Rangers','#003278','#C0111F'],['TOR','Blue Jays','#134A8E','#FFFFFF'],['WSH','Nationals','#AB0003','#FFFFFF']];
-const NHL=[['ANA','Ducks','#F47A38','#000000'],['BOS','Bruins','#000000','#FFB81C'],['BUF','Sabres','#003087','#FFB81C'],['CGY','Flames','#C8102E','#F1BE48'],['CAR','Hurricanes','#CE1126','#000000'],['CHI','Blackhawks','#CF0A2C','#000000'],['COL','Avalanche','#6F263D','#236192'],['CBJ','Blue Jackets','#002654','#CE1126'],['DAL','Stars','#006847','#FFFFFF'],['DET','Red Wings','#CE1126','#FFFFFF'],['EDM','Oilers','#041E42','#FF4C00'],['FLA','Panthers','#041E42','#C8102E'],['LAK','Kings','#111111','#A2AAAD'],['MIN','Wild','#154734','#A6192E'],['MTL','Canadiens','#AF1E2D','#FFFFFF'],['NSH','Predators','#FFB81C','#041E42'],['NJD','Devils','#CE1126','#000000'],['NYI','Islanders','#00539B','#F47D30'],['NYR','Rangers','#0038A8','#CE1126'],['OTT','Senators','#C52032','#000000'],['PHI','Flyers','#F74902','#000000'],['PIT','Penguins','#000000','#FCB514'],['SJS','Sharks','#006D75','#FFFFFF'],['SEA','Kraken','#001628','#99D9D9'],['STL','Blues','#002F87','#FCB514'],['TBL','Lightning','#002868','#FFFFFF'],['TOR','Maple Leafs','#00205B','#FFFFFF'],['UTA','Mammoth','#010101','#69B3E7'],['VAN','Canucks','#00205B','#00843D'],['VGK','Golden Knights','#333F42','#B4975A'],['WSH','Capitals','#C8102E','#041E42'],['WPG','Jets','#041E42','#FFFFFF']];
 function lum(h){const v=[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255).map(c=>c<=.03928?c/12.92:Math.pow((c+.055)/1.055,2.4));return .2126*v[0]+.7152*v[1]+.0722*v[2];}
 function cr(a,b){const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
 const tcol=(a,b)=>cr(a,b)>=4?b:(cr(a,'#FFFFFF')>=cr(a,'#000000')?'#FFFFFF':'#000000');
-const team=([k,n,c1,c2])=>({k,n,abbr:k,c1,c2,tc:tcol(c1,c2)});
+const CITIES=[['NYC','New York'],['LA','Los Angeles'],['CHI','Chicago'],['HOU','Houston'],['PHX','Phoenix'],['PHL','Philadelphia'],['SA','San Antonio'],['SD','San Diego'],['DAL','Dallas'],['AUS','Austin'],['SF','San Francisco'],['SEA','Seattle'],['DEN','Denver'],['BOS','Boston'],['NSH','Nashville'],['ATL','Atlanta'],['MIA','Miami'],['DET','Detroit'],['LV','Las Vegas'],['PDX','Portland'],['NOLA','New Orleans'],['MSP','Minneapolis'],['KC','Kansas City'],['STL','St. Louis'],['PIT','Pittsburgh'],['CLE','Cleveland'],['BAL','Baltimore'],['DC','Washington'],['TOR','Toronto'],['VAN','Vancouver'],['LDN','London'],['MAN','Manchester'],['DUB','Dublin'],['AMS','Amsterdam'],['SYD','Sydney'],['TYO','Tokyo']];
+const CITY_COLORS=['#2F5FD0','#D93A2B','#2E9E4F','#7D45B8','#EF7D22','#1A9C9C','#1F2F6B','#C9A23A','#E85C9E','#7A1F2B','#3FA9E6','#8A5A35'];
+const city=([k,n],i)=>{const c1=CITY_COLORS[i%CITY_COLORS.length];return {k,n,abbr:k,c1,c2:null,tc:tcol(c1,'#FFFFFF')};};
 const emo=list=>list.map(([k,n])=>({k,n,img:EMO[k]}));
 const CATS=[
  {id:'flags',n:'Flags',items:FLAGS.map(([k,n])=>({k,n,img:FIMG[k]}))},
  {id:'colors',n:'Colors',items:COLORS.map(([k,n,c])=>({k,n,color:c}))},
  {id:'animals',n:'Animals',items:emo(LISTS.animals)},
- {id:'nfl',n:'Football teams',items:NFL.map(team)},
- {id:'nba',n:'Basketball teams',items:NBA.map(team)},
- {id:'mlb',n:'Baseball teams',items:MLB.map(team)},
- {id:'nhl',n:'Hockey teams',items:NHL.map(team)},
+ {id:'cities',n:'Cities',items:CITIES.map(city)},
  {id:'sports',n:'Sports',items:emo(LISTS.sports)},
  {id:'food',n:'Food & drink',items:emo(LISTS.food)},
  {id:'icons',n:'Fun icons',items:emo(LISTS.icons)}];
@@ -164,14 +159,14 @@ function symHtml(s){
   const it=item(s.cat,s.key);
   if(it.img)return `<img class="fl" src="${it.img}" alt="">`;
   if(it.color)return `<svg class="fl" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="${it.color}" stroke="rgba(255,255,255,.35)" stroke-width="5"/></svg>`;
-  const fs=it.abbr.length>2?31:40;
-  return `<svg class="fl" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="${it.c1}" stroke="${it.c2}" stroke-width="8"/><text x="50" y="50" dy=".36em" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="${fs}" fill="${it.tc}">${it.abbr}</text></svg>`;
+  const fs=it.abbr.length>3?25:it.abbr.length>2?31:40;
+  return `<svg class="fl" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="${it.c1}" stroke="${it.c2||'rgba(255,255,255,.85)'}" stroke-width="7"/><text x="50" y="50" dy=".36em" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="${fs}" fill="${it.tc}">${it.abbr}</text></svg>`;
 }
 
 const BG='#1E2A26',SLOT=['#E35D50','#52B97F','#6C9BE6','#B48AE0'];
 function accent(sym,i){const it=item(sym.cat,sym.key);
-  const c=it.color?[it.color]:it.c1?[it.c1,it.c2]:[];
-  const ok=c.filter(x=>cr(x,BG)>=3).sort((a,b)=>cr(b,BG)-cr(a,BG));
+  const c=it.color?[it.color]:it.c1?[it.c1,it.c2].filter(Boolean):[];
+  const ok=c.filter(x=>cr(x,BG)>=3);
   if(ok[0])return ok[0];
   if(c[0]&&lum(c[0])>0.004){let x=c[0];for(let k=1;k<=10&&cr(x,BG)<3.2;k++)x=mix(c[0],'#FFFFFF',k/10);return x;}
   return SLOT[i];}
@@ -570,6 +565,7 @@ function renderSetup(){
     <div class="desc">${g.desc}</div>
     <div class="start${at('start')}">${cfg.count===1?'Start practice':'Start game'}</div>
     <div class="hint">Arrows to move and change, OK to choose. On a symbol, press OK to pick another.</div>
+    <div class="hint" style="font-size:.6rem;opacity:.7">Flag, animal and icon images: Twemoji by Twitter/X and contributors, CC-BY 4.0.</div>
   </div>
   <div class="scards">${[...Array(cfg.count)].map((_,i)=>`<div class="scard" style="--pc:${acc(i)}">
     <div class="sbox${at('sym',i)}">${symHtml({cat:cfg.cat,key:symKey(i)})}<div>${esc(item(cfg.cat,symKey(i)).n)}</div></div>
