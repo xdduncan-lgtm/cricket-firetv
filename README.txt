@@ -1,47 +1,45 @@
-CRICKET SCOREBOARD FOR FIRE TV
-==============================
-You need: your Windows computer (for the one-time GitHub step) and your Fire Stick.
-Nothing to install on the computer. The app works on the Fire Stick with no internet.
+PUBLISHING DARTS SCOREBOARD ON THE AMAZON APPSTORE
+==================================================
 
-PART 1 - Build the app (Windows computer, about 10 minutes, one time)
-1. Unzip this download. You'll have a folder named "cricket-firetv".
-2. Sign in at github.com. Click "+" (top right) > New repository.
-   Name: cricket-firetv. Choose Public. Click Create repository.
-3. On the new page click "uploading an existing file".
-4. Open the cricket-firetv folder, select EVERYTHING inside it (including the
-   ".github" folder), and drag it all onto the GitHub page. Click Commit changes.
-5. Click the "Actions" tab. A build named "Build Fire TV app" starts by itself.
-   Wait for the green check mark (3-5 minutes).
-   - If nothing appears in Actions, the .github folder didn't upload. Click
-     Add file > Create new file, type the name  .github/workflows/build.yml
-     paste in the contents of that file from this folder, and Commit.
-6. Your app's download link is now:
-   https://github.com/YOUR-USERNAME/cricket-firetv/releases/latest/download/cricket.apk
+PART 1 - Add your signing key to GitHub (once, about 5 minutes)
+Your private signing key is in the separate "PRIVATE-signing-key" download.
+Do NOT upload those files to GitHub; they go into GitHub "secrets" instead.
+1. Open github.com/xdduncan-lgtm/cricket-firetv > Settings >
+   Secrets and variables > Actions > New repository secret.
+2. Name: KEYSTORE_BASE64   Secret: paste everything in KEYSTORE_BASE64.txt. Add secret.
+3. New repository secret again.
+   Name: KEYSTORE_PASSWORD   Secret: paste what's in KEYSTORE_PASSWORD.txt. Add secret.
+4. Save the PRIVATE-signing-key files somewhere safe (e.g. a USB drive or password
+   manager). You need the same key for every future update in the store.
 
-PART 2 - Install on the Fire Stick (about 5 minutes, one time)
-1. Turn on developer options: Settings > My Fire TV > About. Highlight your
-   device name and press OK 7 times until it says you're a developer.
-2. On the Fire Stick home screen, search for "Downloader" (orange icon by
-   AFTVnews) and install it. It's free.
-3. Settings > My Fire TV > Developer options > Install unknown apps >
-   turn Downloader ON.
-4. Open Downloader, type the download link from Part 1 step 6, press Go,
-   then press Install. Choose Delete afterwards to free space (not the app).
-5. "Cricket Scoreboard" is now in Your Apps & Channels (the square grid
-   button on the home screen). Hold OK on it and choose Move to front.
+PART 2 - Upload the new version (Windows computer)
+1. Unzip this download.
+2. In your GitHub project click Add file > Upload files. From this cricket-firetv
+   folder drag in the "app" folder, the ".github" folder and PRIVACY.md.
+   Click Commit changes. (Existing files are replaced.)
+3. Watch Actions for the green check mark. Your download link is unchanged:
+   https://github.com/xdduncan-lgtm/cricket-firetv/releases/latest/download/cricket.apk
 
-USING THE REMOTE
-  Up / Down ............ pick a number (20 to Bull), or Miss / Undo / Next / Menu
-  Left / Right ......... Single, Double, Triple
-  OK (center) .......... score the dart
-  Rewind ⏪ ............ undo
-  Fast-forward ⏩ ...... next player
-  Play/Pause ⏯ ......... miss
-  Back or Menu ☰ ....... menu (restart, change players)
-  On the start screen, Back exits the app.
+PART 3 - Your own Fire Stick
+The app is now "Darts Scoreboard" with a new app ID, so uninstall the old
+"Cricket Scoreboard" once, then install with Downloader from the same link.
+From now on, updates install over the top without uninstalling.
 
-Notes
-- The game in progress is saved on the Fire Stick if you exit.
-- To update the app later: upload the changed file to GitHub, wait for the new
-  build, uninstall the old app on the Fire Stick, then install with the same link.
-- Flag images: Twemoji by Twitter/X and contributors, CC-BY 4.0.
+PART 4 - Submit to Amazon
+1. Go to developer.amazon.com, sign in with your Amazon account, finish the free
+   developer registration.
+2. Dashboard > Amazon Appstore > Add a New App > Android. Title: Darts Scoreboard.
+3. Upload Your App File: download cricket.apk from the link in Part 2 and upload it.
+   (Rename it darts-scoreboard.apk first if you like.)
+4. Target Your App: choose Fire TV devices (the Fire OS sticks). Phones and
+   tablets can be unticked.
+5. Appstore Details: paste the text from STORE-LISTING.txt and upload the images
+   from the store-assets download.
+6. Content rating: answer "None" throughout. Price: Free. Availability: your choice
+   of countries.
+7. Submit. Amazon tests the app on real Fire TV devices before it goes live and
+   emails you the result.
+
+When you change the app later: upload the changed file to GitHub, wait for the
+build, then in the Developer Console add a new version and upload the new APK.
+Version numbers go up automatically with each build.
