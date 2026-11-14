@@ -1,16 +1,36 @@
 package com.cricket.scoreboard;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 public class MainActivity extends Activity {
     private WebView web;
+
+    // Music apps the Music menu offers, in display order (matched by app name).
+    private static final String[] MUSIC = {
+        "spotify", "amazon music", "pandora", "apple music", "youtube music",
+        "iheart", "siriusxm", "tunein", "tidal", "deezer", "soundcloud"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +44,58 @@ public class MainActivity extends Activity {
         s.setAllowFileAccess(true);
         web.setWebViewClient(new WebViewClient());
         web.setWebChromeClient(new WebChromeClient()); // enables the rename dialog
+        web.addJavascriptInterface(new Bridge(), "Android");
         web.setFocusable(true);
         web.setFocusableInTouchMode(true);
         web.requestFocus();
         web.loadUrl("file:///android_asset/index.html");
+    }
+
+    /** Lets the page list installed music apps and open one. The app itself never plays audio,
+     *  so music started in another app keeps playing when the user comes back here. */
+    private class Bridge {
+        @JavascriptInterface
+        public String musicApps() {
+            PackageManager pm = getPackageManager();
+            Map<String, String> found = new LinkedHashMap<>();
+            for (String cat : new String[]{Intent.CATEGORY_LEANBACK_LAUNCHER, Intent.CATEGORY_LAUNCHER}) {
+                Intent q = new Intent(Intent.ACTION_MAIN).addCategory(cat);
+                List<ResolveInfo> list = pm.queryIntentActivities(q, 0);
+                for (ResolveInfo r : list) {
+                    String pkg = r.activityInfo.packageName;
+                    if (pkg.equals(getPackageName()) || found.containsKey(pkg)) continue;
+                    String label = String.valueOf(r.loadLabel(pm));
+                    if (rank(label) >= 0) found.put(pkg, label);
+                }
+            }
+            List<String[]> apps = new ArrayList<>();
+            for (Map.Entry<String, String> e : found.entrySet()) apps.add(new String[]{e.getKey(), e.getValue()});
+            Collections.sort(apps, (a, b) -> rank(a[1]) - rank(b[1]));
+            JSONArray out = new JSONArray();
+            try {
+                for (String[] a : apps) out.put(new JSONObject().put("pkg", a[0]).put("label", a[1]));
+            } catch (Exception ignored) { }
+            return out.toString();
+        }
+
+        @JavascriptInterface
+        public void openApp(final String pkg) {
+            runOnUiThread(() -> {
+                PackageManager pm = getPackageManager();
+                Intent i = pm.getLeanbackLaunchIntentForPackage(pkg);
+                if (i == null) i = pm.getLaunchIntentForPackage(pkg);
+                if (i != null) {
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try { startActivity(i); } catch (Exception ignored) { }
+                }
+            });
+        }
+    }
+
+    private static int rank(String label) {
+        String l = label.toLowerCase(Locale.US);
+        for (int i = 0; i < MUSIC.length; i++) if (l.contains(MUSIC[i])) return i;
+        return -1;
     }
 
     @Override

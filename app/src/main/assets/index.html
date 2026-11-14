@@ -103,7 +103,28 @@ table.sc .tot{font-weight:800}
 .srow .vl{font-weight:700;display:flex;align-items:center;gap:.5rem}
 .srow .ar{color:var(--muted);font-weight:400;font-size:.8rem}
 .desc{color:var(--muted);font-size:.82rem;line-height:1.4;padding:0 .2rem}
-.start{align-self:flex-start;background:var(--ink);color:var(--bg);font-weight:800;font-size:1.25rem;padding:.65rem 2.2rem;border-radius:.4rem;margin-top:auto}
+/* buttons row + help/music */
+.brow{display:flex;gap:.7rem;margin-top:auto;align-items:center}
+.sbtn{background:var(--surface);font-weight:700;font-size:1rem;padding:.7rem 1.1rem;border-radius:.4rem}
+.helpbox *{text-align:left}
+.brow>div{white-space:nowrap}
+.brow .start{padding:.65rem 1.6rem}
+.helpbox{display:grid;grid-template-columns:14rem minmax(0,1fr);gap:1.2rem;width:56rem;max-width:none;flex:none;height:31rem;text-align:left;padding:1.2rem 1.4rem}
+.topics{display:flex;flex-direction:column;gap:.25rem;overflow:hidden}
+.topics div{padding:.35rem .7rem;border-radius:.35rem;font-weight:600;font-size:.9rem;color:var(--muted)}
+.topics div.cur{background:var(--gold);color:#141C19}
+.topics div.sec{color:var(--ink)}
+.hc{overflow:hidden;font-size:.88rem;line-height:1.4}
+.hc h2{font-size:1.7rem;margin:0 0 .5rem;color:var(--ink)}
+.box .hc p{margin:0 0 .45rem;color:var(--ink);text-align:left}
+.hc ul{margin:0 0 .55rem;padding-left:1.2rem}
+.hc li{margin:.15rem 0}
+.hc .k{color:var(--gold);font-weight:700}
+.box .hc .foot{color:var(--muted);font-size:.8rem}
+.mlist{display:flex;flex-direction:column;gap:.45rem;margin:.8rem 0}
+.mlist div{padding:.65rem 1rem;border-radius:.4rem;background:var(--raised);font-weight:700;font-size:1.1rem;text-align:left}
+.mlist div.cur{background:var(--gold);color:#141C19}
+.start{align-self:flex-start;background:var(--ink);color:var(--bg);font-weight:800;font-size:1.25rem;padding:.65rem 2.2rem;border-radius:.4rem}
 .hint{color:var(--muted);font-size:.78rem}
 .scards{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1rem;min-height:0}
 .scard{background:var(--surface);border-radius:.5rem;border-top:.4rem solid var(--pc);padding:.8rem;display:flex;flex-direction:column;gap:.6rem;min-width:0;min-height:0}
@@ -417,8 +438,117 @@ function endTurn(){
 }
 function nextPlayer(){if(S.over)return;snap();endTurn();persist();render();}
 
+/* ================= help ================= */
+const HELP={
+ controls:{t:'Remote controls',h:`
+  <p><span class="k">Arrows</span> move and change settings. <span class="k">OK</span> chooses.</p>
+  <p><b>Cricket:</b> ▲▼ pick the number, ◀▶ single, double or triple, then OK.</p>
+  <p><b>Other games:</b> arrows move around the keypad, OK scores the number. <span class="k">⏯ Play/Pause</span> switches single, double and triple. The keypad jumps to each turn’s target.</p>
+  <ul><li><span class="k">⏪ Rewind</span> undoes the last dart (press again to go further back).</li>
+  <li><span class="k">⏩ Fast-forward</span> ends a turn early, for example after a bounce-out.</li>
+  <li><span class="k">Back</span> or <span class="k">☰ Menu</span> opens the menu: how to play, music, restart, new game.</li>
+  <li>The turn passes after three darts. A dart off the board is <b>Miss</b>.</li></ul>
+  <p>Setup: ◀▶ change settings. OK on a symbol opens a picker; OK on a name lets you type one.</p>
+  <p class="foot">Your game saves automatically and resumes if you leave the app.</p>`},
+ music:{t:'Music',h:`
+  <p>Play your own music while you play darts.</p>
+  <ul><li>Choose <span class="k">Music</span> on the start screen or in the menu.</li>
+  <li>Pick Spotify, Amazon Music, Pandora, Apple Music or another music app you have installed.</li>
+  <li>Start a playlist or station.</li>
+  <li>Press <span class="k">Home</span> on the remote and open <b>Darts Scoreboard</b> again. It’s at the front of your apps row.</li></ul>
+  <p>The music keeps playing in the background while you keep score, and your game is right where you left it. Use the remote’s volume buttons to adjust it.</p>
+  <p class="foot">To skip a song or stop the music, open the music app again. Don’t have a music app? Search for one in the Appstore.</p>`},
+ cricket:{t:'Cricket',h:`
+  <p>Only <b>20, 19, 18, 17, 16, 15</b> and the <b>bull</b> count. A single is one mark, a double two and a triple three. The outer bull is one mark and the bullseye two.</p>
+  <p>Three marks <b>closes</b> a number: / then X then Ⓧ.</p>
+  <ul><li><b>Standard:</b> once you’ve closed a number, extra hits score its value as long as an opponent hasn’t closed it. Close everything with the same or more points than everyone else to win.</li>
+  <li><b>Cut-throat:</b> extra hits add points to opponents who haven’t closed that number. Close everything with the lowest score to win.</li>
+  <li><b>No points:</b> first to close every number wins.</li></ul>
+  <p class="foot">MPR is marks per round, a measure of how well you’re throwing.</p>`},
+ x01:{t:'X01 (301 / 501 / 701)',h:`
+  <p>Everyone starts on 301, 501 or 701. Each dart is subtracted from your score. First to reach <b>exactly zero</b> wins.</p>
+  <ul><li><b>Double out:</b> your last dart must be a double (the bullseye counts as double 25).</li>
+  <li><b>Bust:</b> going below zero, leaving 1, or reaching zero without a double cancels that turn’s score and play passes on.</li>
+  <li><b>Double in:</b> your score doesn’t start counting down until you hit a double.</li></ul>
+  <p>From 170 or less, the app suggests a <b>checkout</b>, the darts that would finish the game. The average shown is your three-dart average.</p>`},
+ atc:{t:'Around the Clock',h:`
+  <p>Hit <b>1, 2, 3</b> and so on up to <b>20</b> in order, then the <b>bull</b>. Only your current target counts. First to hit the bull wins.</p>
+  <p><b>Skip ahead</b> option: a double moves you on two numbers and a triple three. With “count once”, any hit just moves you on one.</p>
+  <p class="foot">Great for practice on your own, too.</p>`},
+ shanghai:{t:'Shanghai',h:`
+  <p>Round 1 aims at 1, round 2 at 2, and so on, for 7 or 20 rounds. Only darts in that round’s number score: single, double or triple its value.</p>
+  <p>Hit a <b>single, double and triple</b> of the target in one turn and that’s a <b>Shanghai</b>, an instant win.</p>
+  <p>Otherwise, the highest score after the last round wins.</p>`},
+ killer:{t:'Killer',h:`
+  <p>For 2 to 4 players. Everyone is given a random number, shown big on their card.</p>
+  <ul><li>Hit the <b>double of your own number</b> to become a <b>killer</b>.</li>
+  <li>Killers take a life from another player by hitting the double of <b>their</b> number.</li>
+  <li>Careful: a killer who hits their own double loses a life.</li>
+  <li>Lose all your lives (3 or 5) and you’re out. Last player standing wins.</li></ul>
+  <p class="foot">Only doubles count, so the keypad starts on Double each dart.</p>`},
+ halveit:{t:'Halve-It',h:`
+  <p>Nine rounds, each with a target: <b>15, 16, any double, 17, 18, any triple, 19, 20, bull</b>.</p>
+  <p>Darts that hit the target score their full value. Miss the target with all three darts and your total is <b>cut in half</b>.</p>
+  <p>Highest score after the bull round wins.</p>`},
+ baseball:{t:'Baseball',h:`
+  <p>Nine innings. Inning 1 aims at 1, inning 2 at 2, and so on.</p>
+  <p>Each hit on the inning’s number scores <b>runs</b>: a single 1 run, a double 2 and a triple 3. Other numbers score nothing.</p>
+  <p>Most runs after nine innings wins. If players are tied, play goes into <b>extra innings</b> (10, 11 and so on) until someone leads.</p>`},
+ countup:{t:'High Score',h:`
+  <p>The simplest game: every dart scores its value, with doubles and triples counting double and triple.</p>
+  <p>Play 8 or 10 rounds. Highest total wins.</p>
+  <p class="foot">The best possible round is 180: three triple 20s.</p>`},
+ golf:{t:'Golf',h:`
+  <p>9 or 18 holes. Hole 1 aims at 1, hole 2 at 2, and so on. Like real golf, <b>lowest total wins</b>.</p>
+  <p>Your score for the hole is your <b>last dart</b>: double 1, triple 2, single 3, anything else 5.</p>
+  <ul><li>Happy with your score? Press <span class="k">⏩</span> to keep it and end your turn.</li>
+  <li>A double is the best score, so it ends your turn automatically.</li></ul>`},
+ bobs27:{t:'Bob’s 27',h:`
+  <p>A doubles practice game. You start with <b>27 points</b> and aim at <b>double 1, double 2</b> and so on up to <b>double 20</b>, then the <b>bullseye</b>.</p>
+  <p>Each double you hit adds its value (double 5 adds 10). Miss all three darts and you lose that double’s value instead.</p>
+  <p>Drop below zero and you’re out. Highest score after the bullseye wins.</p>`}
+};
+const HTOPICS=['controls','music',...GAME_IDS];
+function openHelp(topic){ui.help={i:Math.max(0,HTOPICS.indexOf(topic))};render();}
+function keyHelp(k){
+  const h=ui.help;
+  if(k==='up')h.i=Math.max(0,h.i-1);
+  else if(k==='down')h.i=Math.min(HTOPICS.length-1,h.i+1);
+  else if(k==='back'||k==='menu'||k==='ok')ui.help=null;
+  render();return true;
+}
+function helpHtml(){
+  if(!ui.help)return '';
+  const id=HTOPICS[ui.help.i],H=HELP[id];
+  return `<div class="ov"><div class="box helpbox">
+    <div class="topics">${HTOPICS.map((t,j)=>`<div class="${j===ui.help.i?'cur':''}${j<2?' sec':''}">${HELP[t].t}</div>`).join('')}</div>
+    <div class="hc"><h2 class="slab">${H.t}</h2>${H.h}<p class="foot" style="margin-top:.8rem">▲▼ choose a topic, Back to close.</p></div></div></div>`;
+}
+/* ================= music ================= */
+const MUSIC_ORDER=['spotify','amazon music','pandora','apple music','youtube music','iheart','siriusxm','tunein','tidal','deezer','soundcloud'];
+function musicApps(){try{if(window.Android&&Android.musicApps)return JSON.parse(Android.musicApps());}catch(e){}return null;}
+function openMusic(){ui.music={i:0,apps:musicApps()};render();}
+function keyMusic(k){
+  const m=ui.music,n=m.apps?m.apps.length:0;
+  if(k==='up')m.i=Math.max(0,m.i-1);
+  else if(k==='down')m.i=Math.min(Math.max(0,n-1),m.i+1);
+  else if(k==='ok'&&n){const a=m.apps[m.i];ui.music=null;render();try{Android.openApp(a.pkg);}catch(e){}return true;}
+  else if(k==='back'||k==='menu'||k==='ok')ui.music=null;
+  render();return true;
+}
+function musicHtml(){
+  if(!ui.music)return '';
+  const m=ui.music;
+  const body=m.apps===null?`<p>Open your music app from the Fire TV home screen, start a playlist, then press Home and come back to Darts Scoreboard. Your music keeps playing.</p>`
+    :m.apps.length?`<div class="mlist">${m.apps.map((a,j)=>`<div class="${j===m.i?'cur':''}">${esc(a.label)}</div>`).join('')}</div>
+      <p>Pick an app and start your music, then press <b>Home</b> and open <b>Darts Scoreboard</b> again. The music keeps playing while you score.</p>`
+    :`<p>No music apps were found. Install Spotify, Amazon Music, Pandora or Apple Music from the Appstore, then come back here.</p>`;
+  return `<div class="ov"><div class="box" style="max-width:34rem;text-align:left"><h2 class="slab">Music</h2>${body}<p class="foot" style="color:var(--muted);font-size:.85rem">Back to close.</p></div></div>`;
+}
 /* ================= remote ================= */
 function handle(k){
+  if(ui.help)return keyHelp(k);
+  if(ui.music)return keyMusic(k);
   if(ui.pick)return keyPick(k);
   if(ui.menu)return keyMenu(k);
   if(!S)return keySetup(k);
@@ -467,7 +597,7 @@ function keyPad(k){
   }
   render();return true;
 }
-const MENU=()=>['Resume','Restart game','New game / change setup'];
+const MENU=()=>['Resume','How to play this game','Music','Restart game','New game / change setup'];
 function keyMenu(k){
   const items=MENU();
   if(k==='up'){ui.menu.i=Math.max(0,ui.menu.i-1);ui.menu.confirm=false;}
@@ -477,6 +607,8 @@ function keyMenu(k){
     const it=items[ui.menu.i];
     if(it==='Restart game'){if(!ui.menu.confirm)ui.menu.confirm=true;else{ui.menu=null;return newGame(S.starter),true;}}
     else if(it.startsWith('New game')){ui.menu=null;S=null;ui.sidx=0;persist();}
+    else if(it.startsWith('How to play')){ui.menu=null;return openHelp(S.g),true;}
+    else if(it==='Music'){ui.menu=null;return openMusic(),true;}
     else ui.menu=null;
   }
   render();return true;
@@ -517,7 +649,8 @@ function keySetup(k){
         else{const v=prompt('Name for player '+(it.i+1)+' (leave blank to use the symbol’s name)',cfg.pl[it.i].custom?cfg.pl[it.i].name:'');
           if(v!==null){cfg.pl[it.i].name=v.trim().slice(0,20);cfg.pl[it.i].custom=!!v.trim();}}
       }
-      else if(it.t==='start'&&k==='ok')return newGame(0),true;
+      else if(it.t==='start'){ui.bcol=ui.bcol||0;if(d)ui.bcol=Math.min(2,Math.max(0,ui.bcol+d));
+        else if(ui.bcol===1)return openHelp('controls'),true;else if(ui.bcol===2)return openMusic(),true;else return newGame(0),true;}
       break;
     case 'back':return false;
     default:return true;
@@ -563,8 +696,9 @@ function renderSetup(){
     ${row(at('count'),'Players',cfg.count+(g.min>1?` <small style="color:var(--muted);font-weight:400">(min ${g.min})</small>`:''))}
     ${row(at('cat'),'Symbols',cat(cfg.cat).n)}
     <div class="desc">${g.desc}</div>
-    <div class="start${at('start')}">${cfg.count===1?'Start practice':'Start game'}</div>
-    <div class="hint">Arrows to move and change, OK to choose. On a symbol, press OK to pick another.</div>
+    <div class="brow"><div class="start${at('start')&&!ui.bcol?' sel':''}">${cfg.count===1?'Start practice':'Start game'}</div>
+      <div class="sbtn${at('start')&&ui.bcol===1?' sel':''}">How to play</div><div class="sbtn${at('start')&&ui.bcol===2?' sel':''}">♫ Music</div></div>
+    <div class="hint">Arrows to move and change, OK to choose. New here? Go down to How to play.</div>
     <div class="hint" style="font-size:.6rem;opacity:.7">Flag, animal and icon images: Twemoji by Twitter/X and contributors, CC-BY 4.0.</div>
   </div>
   <div class="scards">${[...Array(cfg.count)].map((_,i)=>`<div class="scard" style="--pc:${acc(i)}">
@@ -626,7 +760,8 @@ function renderPad(){
     </div></div>`+overHtml()+menuHtml();
 }
 function acc(i){return S?accent(S.players[i].sym,i):accent({cat:cfg.cat,key:symKey(i)},i);}
-function render(){if(!S)renderSetup();else if(G().input==='cricket')renderCricket();else renderPad();}
+function render(){if(!S)renderSetup();else if(G().input==='cricket')renderCricket();else renderPad();
+  if(ui.help||ui.music)app.insertAdjacentHTML('beforeend',helpHtml()+musicHtml());}
 render();
 })();
 </script>
